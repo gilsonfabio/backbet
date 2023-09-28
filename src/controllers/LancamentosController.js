@@ -4,11 +4,10 @@ require('dotenv/config');
 module.exports = {       
     
     async newBet(request, response) {
-
-        const lanUsrId = request.body.usrId;
-        const lanMovId = request.body.movId; 
-        const lanEquId = request.body.equId; 
-        const lanValor = parseInt(request.body.vlrBet); 
+        const lanUsrId = request.body.lanUsrId;
+        const lanMovId = request.body.lanMovId; 
+        const lanEquId = request.body.lanEquId; 
+        const lanValor = parseInt(request.body.lanValor); 
         const lanStatus = 'A' 
 
         const [lanId] = await connection('lancamentos').insert({
@@ -33,13 +32,13 @@ module.exports = {
             .select('*');
             
 
-            let auxEqu01 = parseInt(movim[0].movEqu01);  
+            let auxEqu01 = movim[0].movEqu01;  
             let auxPayout01 = parseInt(movim[0].movPayout01); 
             let auxVlrPay01 = movim[0].movVlrPay01; 
-            let auxEqu02 = parseInt(movim[0].movEqu02);  
+            let auxEqu02 = movim[0].movEqu02;  
             let auxPayout02 = parseInt(movim[0].movPayout02); 
             let auxVlrPay02 = movim[0].movVlrPay02;  
-            let auxEqu03 = parseInt(movim[0].movEqu03);  
+            let auxEqu03 = movim[0].movEqu03;  
             let auxPayout03 = parseInt(movim[0].movPayout03); 
             let auxVlrPay03 = movim[0].movVlrPay03;   
             let auxVlrTotal = movim[0].movVlrTotal; 
@@ -55,7 +54,9 @@ module.exports = {
             let betPayout03 = 0.00;
             let betVlrPay03 = 0.00;
 
-            if (lanEquId === auxEqu01) {
+            console.log('Achou equipe:', lanEquId, ' -> ', auxEqu01, auxEqu02, auxEqu03)
+
+            if (lanEquId == auxEqu01) {                
                 betVlrPay01 = auxVlrPay01 + betValor;
                 betPayout01 = (betVlrReal / betVlrPay01).toFixed(2);
                 betVlrPay02 = auxVlrPay02;
@@ -63,7 +64,7 @@ module.exports = {
                 betVlrPay03 = auxVlrPay03;
                 betPayout03 = (betVlrReal / betVlrPay03).toFixed(2);
             }else {
-                if (lanEquId === auxEqu02) {
+                if (lanEquId == auxEqu02) {
                     betVlrPay02 = auxVlrPay02 + betValor;
                     betPayout02 = (betVlrReal / betVlrPay02).toFixed(2);
                     betVlrPay01 = auxVlrPay01;
@@ -71,7 +72,7 @@ module.exports = {
                     betVlrPay03 = auxVlrPay03;
                     betPayout03 = (betVlrReal / betVlrPay03).toFixed(2);
                 }else { 
-                    if (lanEquId === auxEqu03) {
+                    if (lanEquId == auxEqu03) {
                         betVlrPay03 = auxVlrPay03 + betValor;
                         betPayout03 = (betVlrReal / betVlrPay03).toFixed(2);
                         betVlrPay02 = auxVlrPay02;

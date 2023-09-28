@@ -22,8 +22,10 @@ routes.get('/eventos', EventosController.index);
 routes.get('/equipes', EquipesController.index);
 
 routes.post('/movimentos', MovimentosController.index);
+routes.get('/busMovim/:idMov', MovimentosController.busMovim);
 
 routes.post('/newbet', LancamentosController.newBet);
+
 
 routes.post('/servicos', ServicesController.index);
 routes.post('/newservicos', ServicesController.create);
