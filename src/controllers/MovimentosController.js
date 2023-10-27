@@ -13,18 +13,20 @@ module.exports = {
 
         let lastPage = 1;
 
+        //console.log(request.body)
+
         const movimento = await connection('movimentos').count({count: '*'});
-        const countUser = JSON.stringify(movimento[0].count);
+        const countUser = JSON.stringify(movimento.count);
         
-        //console.log('modalidades:',modalidade);
-        //console.log('evento:',evento);
-        //console.log('página atual:',page);
-        //console.log('limite p/ página:',per_page);
-        //console.log('total de registros:',countUser);
+        console.log('modalidades:',modalidade);
+        console.log('evento:',evento);
+        console.log('página atual:',page);
+        console.log('limite p/ página:',per_page);
+        console.log('total de registros:',countUser);
 
         if (countUser !== 0) {
             lastPage = Math.ceil(countUser / per_page);
-            //console.log('última página:',lastPage);
+            console.log('última página:',lastPage);
         } else {
             return res.status(400).json({
                 mensagem: "Erro: Nenhum usuário encontrado!"
@@ -33,7 +35,7 @@ module.exports = {
 
         const offset = Number((page * per_page) - per_page)
 
-        //console.log('offset página:',offset);   
+        console.log('offset página:',offset);   
         
         const pagination = {
             page: page,
