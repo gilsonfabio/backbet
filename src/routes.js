@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const routes = express.Router();
 
+const EfipayController = require('./controllers/EfipayController');
 const UsersController = require('./controllers/UsersController');
 const ModalidadesController = require('./controllers/ModalidadesController');
 const EventosController = require('./controllers/EventosController');
@@ -63,5 +64,7 @@ routes.post('/newbet', LancamentosController.newBet);
 
 routes.post('/servicos', ServicesController.index);
 routes.post('/newservicos', ServicesController.create);
+
+routes.post('/authorize', EfipayController.auth);
 
 module.exports = routes;
