@@ -74,18 +74,22 @@ module.exports = {
 
     async create(request, response) {
         //console.log(request.body);
-        const {nome, cpf, nascimento, email, celular , password, nivAcesso} = request.body;
+
+        const {usrNomUsr, usrNome, usrCpf, usrEmail, usrCelular, usrTimTorce, usrPraEsporte, usrEsporte, usrPassword, usrChvPix} = request.body;
         let status = 'A'; 
-        let snhCrypt = await bcrypt.hash(password, saltRounds);
+        let snhCrypt = await bcrypt.hash(usrPassword, saltRounds);
 
         const [usrId] = await connection('usuarios').insert({
-            usrNome: nome, 
-            usrEmail: email, 
-            usrPassword: snhCrypt,
-            usrCelular: celular, 
-            usrCpf: cpf, 
-            usrNascimento: nascimento, 
-            usrNivAcesso: nivAcesso,
+            usrNomUsr, 
+            usrNome, 
+            usrCpf, 
+            usrEmail, 
+            usrCelular, 
+            usrTimTorce, 
+            usrPraEsporte, 
+            usrEsporte, 
+            usrPassword: snhCrypt, 
+            usrChvPix,
             usrStatus: status
         });
            
@@ -128,16 +132,19 @@ module.exports = {
 
     async updUsuario(request, response) {
         let id = request.params.idUsr;         
-        const { usrNome, usrNascimento, usrCpf, usrCelular, usrEmail, usrNivAcesso} = request.body;
+        const {usrNomUsr, usrNome, usrCpf, usrEmail, usrCelular, usrTimTorce, usrPraEsporte, usrEsporte, usrChvPix} = request.body;
  
         await connection('usuarios').where('usrId', id)   
         .update({
+            usrNomUsr, 
             usrNome, 
-            usrNascimento, 
             usrCpf, 
-            usrCelular, 
             usrEmail, 
-            usrNivAcesso        
+            usrCelular, 
+            usrTimTorce, 
+            usrPraEsporte, 
+            usrEsporte, 
+            usrChvPix,        
         });
            
         return response.status(204).send();
