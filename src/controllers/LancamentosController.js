@@ -3,6 +3,22 @@ require('dotenv/config');
 
 module.exports = {       
     
+    async index (request, response) {
+        const lancamentos = await connection('lancamentos')
+        .select('*');
+    
+        return response.json(lancamentos);
+    },
+
+    async searchLanc (request, response) {
+        const txid = request.params.txid;
+        const lancamento = await connection('lancamentos')
+        .where('lanTxid', txid)
+        .select('*');
+    
+        return response.json(lancamento);
+    },
+
     async newBet(request, response) {
         const lanUsrId = request.body.lanUsrId;
         const lanMovId = request.body.lanMovId; 
@@ -101,7 +117,7 @@ module.exports = {
                 movVlrBet: betVlrReal,
             });
 
-        return response.json(movim);
+        return response.json(lanId);
          
                 
         //return response.json({servicos});

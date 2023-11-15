@@ -59,7 +59,10 @@ routes.get('/equipes', EquipesController.index);
 routes.post('/movimentos', MovimentosController.index);
 routes.get('/busMovim/:idMov', MovimentosController.busMovim);
 
+routes.get('/lancamentos', LancamentosController.index);
+routes.get('/searchLanc/:txid', LancamentosController.searchLanc);
 routes.post('/newbet', LancamentosController.newBet);
+
 
 
 routes.post('/servicos', ServicesController.index);

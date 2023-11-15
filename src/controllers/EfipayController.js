@@ -70,12 +70,21 @@ module.exports = {
 	
 	async auth (request, response) {
 		
-		console.log(request.body);
+		//console.log(request.body);
 
-        const id = request.body.usrId; 
-		let valor_bet = request.body.lanValor.toFixed(2).toString();
-		let vlr_cli = valor_bet.replace("," , ".");
+        const id = request.body.lanUsrId; 
 
+        const lanUsrId = request.body.lanUsrId;
+        const lanMovId = request.body.lanMovId; 
+        const lanEquId = request.body.lanEquId; 
+        const lanValor = request.body.lanValor.replace("," , ".");
+        console.log('Valor Original:', request.body.lanValor);
+        let valor_bet = parseFloat(lanValor).toFixed(2);
+        console.log('Valor Bet:',valor_bet);       
+        let vlrAposta = valor_bet.toString().replace("," , ".");
+        console.log('Valor Aposta:',vlrAposta);
+		let vlr_cli = vlrAposta;
+        
         const usuario = await connection('usuarios')
         .where('usrId', id)
         .select('usrNome', 'usrCpf');    
@@ -83,7 +92,7 @@ module.exports = {
         let cpf_cli = usuario[0].usrCpf;
         let nome_cli = usuario[0].usrNome;
                
-		//console.log(vlr_cli);
+		console.log('Valor:',vlr_cli);
 		
         let body = {
 	        calendario: {
@@ -109,40 +118,62 @@ module.exports = {
 	        ],
         }
 
-        let params = {
-	        txid: 'dt9BHlyzrb5jrFNAdfEDVpHgiOmDbVq111',
-        }
+        //let params = {
+	    //    txid: 'dt9BHlyzrb5jrFNAdfEDVpHgiOmDbVq111',
+        //}
 
         const efipay = new EfiPay(options)
+        
+        const res = await efipay.pixCreateImmediateCharge([], body);
 
-        const res = await efipay.pixCreateImmediateCharge([], body);      //....informar no lugar do [] -> params
-	    //console.log(res);
-		
-		let paramsQRCode = {
-			id: res.loc.id
-		}
-		
-		const resp = await efipay.pixGenerateQRCode(paramsQRCode);
-		//console.log(resp);
-		const dados = resp;
-		return response.json(dados);
-
-    },
-
-	async webhook (request, response) {
-		const lanUsrId = request.body.lanUsrId;
-        const lanMovId = request.body.lanMovId; 
-        const lanEquId = request.body.lanEquId; 
-        const lanValor = parseInt(request.body.lanValor); 
-        const lanStatus = 'A' 
+        //console.log(res)
+        let txid = res.txid;
+        let status = 'P';
 
         const [lanId] = await connection('lancamentos').insert({
             lanUsrId,
             lanMovId, 
             lanEquId, 
-            lanValor, 
-            lanStatus 
+            lanValor,
+            lanTxid: txid, 
+            lanStatus: status 
         });
+
+        let paramsQRCode = {
+            id: res.loc.id
+        }
+        efipay.pixGenerateQRCode(paramsQRCode)
+	    .then((resposta) => {
+		    //console.log(resposta)
+            const dados = resposta;
+            return response.json(dados);
+	    })
+	    .catch((error) => {
+		    console.log(error)
+            return response.json(error);
+	    })               
+
+        //const res = await efipay.pixCreateImmediateCharge([], body);      //....informar no lugar do [] -> params
+        //console.log(response);
+    },
+
+	async webhook (request, response) {
+		const txid = request.body.txid;
+        let status = 'A';
+        const updLanc = await connection('lancamentos')
+        .where('lanTxid', txid)
+        .update({
+            lanStatus: status, 
+        });
+
+        const regLanc = await connection('lancamentos')
+        .where('lanTxid', txid)
+        .select('*');
+        
+        let lanUsrId = regLanc[0].lanUsrId;
+        let lanMovId = regLanc[0].lanMovId; 
+        let lanEquId = regLanc[0].lanEquId; 
+        let lanValor = regLanc[0].lanValor;
 
         const modal = await connection('equipes')
         .where('equId', lanEquId)
@@ -156,7 +187,6 @@ module.exports = {
         const movim = await connection('movimentos')
             .where('movId', lanMovId)
             .select('*');
-            
 
             let auxEqu01 = movim[0].movEqu01;  
             let auxPayout01 = parseInt(movim[0].movPayout01); 
