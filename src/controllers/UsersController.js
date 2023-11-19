@@ -12,7 +12,7 @@ module.exports = {
         let email = request.body.email;
         let senha = request.body.password;
 
-        console.log('Email:', email)
+        //console.log('Email:', email)
 
         const dados = await connection('usuarios')
             .where('usrEmail', email)

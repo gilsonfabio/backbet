@@ -6,7 +6,7 @@ module.exports = {
     async index (request, response) {
         //const {modalidade, tipo, searchString, page, per_page} = request.body;
         
-        console.log(request.body);
+        //console.log(request.body);
 
         const modalidade = request.body.modalidade;
         const tipo = request.body.tipo;
@@ -20,11 +20,11 @@ module.exports = {
         const servico = await connection('servicos').count({count: '*'});
         const countUser = JSON.stringify(servico[0].count);
         
-        console.log('modalidades:',modalidade);
-        console.log('tipos:',tipo);
-        console.log('página atual:',page);
-        console.log('limite p/ página:',per_page);
-        console.log('total de registros:',countUser);
+        //console.log('modalidades:',modalidade);
+        //console.log('tipos:',tipo);
+        //console.log('página atual:',page);
+        //console.log('limite p/ página:',per_page);
+        //console.log('total de registros:',countUser);
 
         if (countUser !== 0) {
             lastPage = Math.ceil(countUser / per_page);
@@ -48,7 +48,7 @@ module.exports = {
         }
 
         if (!modalidade && !tipo && !searchString) {
-            console.log('pesquisa:',1);
+            //console.log('pesquisa:',1);
             const servicos = await connection('servicos')
             .join('secretarias', 'secId', 'servicos.srvSecId')
             .limit(per_page)
@@ -57,7 +57,7 @@ module.exports = {
             return response.json({pagination, servicos});
         } else {
             if (modalidade && !tipo && !searchString) {
-                console.log('pesquisa:',2);
+                //console.log('pesquisa:',2);
                 const servicos = await connection('servicos')
                 .whereIn('srvMsvId', modalidade)
                 .limit(per_page)
@@ -67,7 +67,7 @@ module.exports = {
                 return response.json({pagination, servicos});
             } else {
                 if (!modalidade && tipo && !searchString) {
-                    console.log('pesquisa:',3);
+                    //console.log('pesquisa:',3);
                     const servicos = await connection('servicos')
                     .whereIn('srvTsvId', tipo)
                     .limit(per_page)
@@ -77,7 +77,7 @@ module.exports = {
                     return response.json({pagination, servicos});
                 } else {
                     if (!modalidade && !tipo && searchString) {
-                        console.log('pesquisa:',4);
+                        //console.log('pesquisa:',4);
                         const servicos = await connection('servicos')                        
                         .where('srvObjetivo', 'like', `%${searchString.replaceAll('%', '\\%')}%`)
                         .limit(per_page)
@@ -87,7 +87,7 @@ module.exports = {
                         return response.json({pagination, servicos});
                     } else {
                         if (modalidade && !tipo && searchString) {
-                            console.log('pesquisa:',5);
+                            //console.log('pesquisa:',5);
                             const servicos = await connection('servicos')
                             .whereIn('srvMsvId', modalidade)
                             .where('srvObjetivo', 'like', `%${searchString.replaceAll('%', '\\%')}%`)
@@ -98,7 +98,7 @@ module.exports = {
                             return response.json({pagination, servicos});
                         } else {
                             if (modalidade && tipo && searchString) {
-                                console.log('pesquisa:',6);
+                                //console.log('pesquisa:',6);
                                 const servicos = await connection('servicos')                                
                                 .whereIn('srvMsvId', modalidade)
                                 .whereIn('srvTsvId', tipo)
@@ -110,7 +110,7 @@ module.exports = {
                                 return response.json({pagination, servicos});
                             } else {
                                 if (!modalidade && !tipo && searchString) {
-                                    console.log('pesquisa:',7);
+                                    //console.log('pesquisa:',7);
                                     const servicos = await connection('servicos')
                                     .where('srvObjetivo', 'like', `%${searchString.replaceAll('%', '\\%')}%`)
                                     .limit(per_page)
@@ -120,7 +120,7 @@ module.exports = {
                                     return response.json({pagination, servicos});
                                 } else {
                                     if (!modalidade && tipo && searchString) {
-                                        console.log('pesquisa:',8);
+                                        //console.log('pesquisa:',8);
                                         const servicos = await connection('servicos')                                        
                                         .whereIn('srvTsvId', tipo)
                                         .where('srvObjetivo', 'like', `%${searchString.replaceAll('%', '\\%')}%`)
@@ -131,7 +131,7 @@ module.exports = {
                                         return response.json({pagination, servicos});
                                     } else {
                                         if (!modalidade && !tipo && !searchString) {
-                                            console.log('pesquisa:',9);
+                                            //console.log('pesquisa:',9);
                                             const servicos = await connection('servicos')
                                             .limit(per_page)
                                             .offset(offset)

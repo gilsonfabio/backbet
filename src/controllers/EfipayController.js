@@ -78,11 +78,11 @@ module.exports = {
         const lanMovId = request.body.lanMovId; 
         const lanEquId = request.body.lanEquId; 
         const lanValor = request.body.lanValor.replace("," , ".");
-        console.log('Valor Original:', request.body.lanValor);
+        //console.log('Valor Original:', request.body.lanValor);
         let valor_bet = parseFloat(lanValor).toFixed(2);
-        console.log('Valor Bet:',valor_bet);       
+        //console.log('Valor Bet:',valor_bet);       
         let vlrAposta = valor_bet.toString().replace("," , ".");
-        console.log('Valor Aposta:',vlrAposta);
+        //console.log('Valor Aposta:',vlrAposta);
 		let vlr_cli = vlrAposta;
         
         const usuario = await connection('usuarios')
@@ -92,7 +92,7 @@ module.exports = {
         let cpf_cli = usuario[0].usrCpf;
         let nome_cli = usuario[0].usrNome;
                
-		console.log('Valor:',vlr_cli);
+		//console.log('Valor:',vlr_cli);
 		
         let body = {
 	        calendario: {
@@ -149,7 +149,7 @@ module.exports = {
             return response.json(dados);
 	    })
 	    .catch((error) => {
-		    console.log(error)
+		    //console.log(error)
             return response.json(error);
 	    })               
 
@@ -210,7 +210,7 @@ module.exports = {
             let betPayout03 = 0.00;
             let betVlrPay03 = 0.00;
 
-            console.log('Achou equipe:', lanEquId, ' -> ', auxEqu01, auxEqu02, auxEqu03)
+            //console.log('Achou equipe:', lanEquId, ' -> ', auxEqu01, auxEqu02, auxEqu03)
 
             if (lanEquId == auxEqu01) {                
                 betVlrPay01 = auxVlrPay01 + betValor;
@@ -239,10 +239,10 @@ module.exports = {
                 }
             }
 
-            console.log(auxEqu01, betVlrPay01, betPayout01 );
-            console.log(auxEqu02, betVlrPay02, betPayout02 );
-            console.log(auxEqu03, betVlrPay03, betPayout03 );
-            console.log(betVlrTotal, betVlrReal );
+            //console.log(auxEqu01, betVlrPay01, betPayout01 );
+            //console.log(auxEqu02, betVlrPay02, betPayout02 );
+            //console.log(auxEqu03, betVlrPay03, betPayout03 );
+            //console.log(betVlrTotal, betVlrReal );
                     
             const updMovim = await connection('movimentos')
             .where('movId', lanMovId)

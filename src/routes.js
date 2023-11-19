@@ -14,7 +14,7 @@ const LancamentosController = require('./controllers/LancamentosController');
 
 routes.get('/', (request, response) => {
     response.json({
-        message: 'Bem-vindo ao servidor Serviços!',
+        message: 'Bem-vindo ao servidor NextBet!',
     });
 });
 
