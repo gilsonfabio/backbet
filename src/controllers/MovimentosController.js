@@ -24,9 +24,9 @@ module.exports = {
         //console.log('limite p/ página:',per_page);
         //console.log('total de registros:',countUser);
 
-        if (countUser !== 0) {
+        if (countUser > 0) {
             lastPage = Math.ceil(countUser / per_page);
-            console.log('última página:',lastPage);
+            //console.log('última página:',lastPage);
         } else {
             return res.status(400).json({
                 mensagem: "Erro: Nenhum usuário encontrado!"

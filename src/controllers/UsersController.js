@@ -58,7 +58,7 @@ module.exports = {
 
         */
 
-        console.log(user)
+        //console.log(user)
 
         return response.json(user);
 
