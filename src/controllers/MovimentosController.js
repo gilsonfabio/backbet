@@ -13,16 +13,17 @@ module.exports = {
 
         let lastPage = 1;
 
-        //console.log(request.body)
+        console.log(request.body)
 
         const movimento = await connection('movimentos').count({count: '*'});
         const countUser = JSON.stringify(movimento.count);
         
-        //console.log('modalidades:',modalidade);
-        //console.log('evento:',evento);
-        //console.log('página atual:',page);
-        //console.log('limite p/ página:',per_page);
-        //console.log('total de registros:',countUser);
+        console.log('modalidades:',modalidade);
+        console.log('evento:',evento);
+        console.log('equipe:',equipe);
+        console.log('página atual:',page);
+        console.log('limite p/ página:',per_page);
+        console.log('total de registros:',countUser);
 
         if (countUser !== 0) {
             lastPage = Math.ceil(countUser / per_page);
@@ -46,7 +47,7 @@ module.exports = {
         }
 
         if (!modalidade && !evento && !equipe) {
-            //console.log('pesquisa:',1);
+            console.log('pesquisa:',1);
             const movimentos = await connection('movimentos')
             .innerJoin('equipes as times1', 'times1.equId', 'movimentos.movEqu01')
             .innerJoin('equipes as times2', 'times2.equId', 'movimentos.movEqu02')
@@ -62,7 +63,7 @@ module.exports = {
             return response.json({pagination, movimentos});
         }else {
             if (modalidade && !evento && !equipe) {
-                //console.log('pesquisa:',2);
+                console.log('pesquisa:',2);
                 const movimentos = await connection('movimentos')
                 .whereIn('modId', modalidade)
                 .innerJoin('equipes as times1', 'times1.equId', 'movimentos.movEqu01')
@@ -79,7 +80,7 @@ module.exports = {
                 return response.json({pagination, movimentos});
             }else {
                 if (modalidade && evento && !equipe) {
-                    //console.log('pesquisa:',3);
+                    console.log('pesquisa:',3);
                     const movimentos = await connection('movimentos')
                     .whereIn('modId', modalidade)
                     .whereIn('eveId', evento)
@@ -97,7 +98,7 @@ module.exports = {
                     return response.json({pagination, movimentos});
                 }else {
                     if (!modalidade && evento && !equipe) {
-                        //console.log('pesquisa:',4);
+                        console.log('pesquisa:',4);
                         const movimentos = await connection('movimentos')
                         .whereIn('eveId', evento)
                         .innerJoin('equipes as times1', 'times1.equId', 'movimentos.movEqu01')
@@ -114,7 +115,7 @@ module.exports = {
                         return response.json({pagination, movimentos});
                     }else {
                         if (modalidade && evento && equipe) {
-                            //console.log('pesquisa:',5);
+                            console.log('pesquisa:',5);
                             const movimentos = await connection('movimentos')
                             .whereIn('modId', modalidade)
                             .whereIn('movEqu01', equipe)
@@ -134,7 +135,7 @@ module.exports = {
                             return response.json({pagination, movimentos});
                         }else {
                             if (!modalidade && evento && equipe) {
-                                //console.log('pesquisa:',6);
+                                console.log('pesquisa:',6);
                                 const movimentos = await connection('movimentos')
                                 .whereIn('movEqu01', equipe)
                                 .orWhereIn('movEqu03', equipe )
@@ -153,7 +154,7 @@ module.exports = {
                                 return response.json({pagination, movimentos});
                             }else {
                                 if (!modalidade && !evento && equipe) {
-                                    //console.log('pesquisa:',7);
+                                    console.log('pesquisa:',7);
                                     const movimentos = await connection('movimentos')
                                     .whereIn('movEqu01', equipe)
                                     .orWhereIn('movEqu03', equipe )
