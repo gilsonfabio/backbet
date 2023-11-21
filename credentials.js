@@ -14,4 +14,5 @@ module.exports = {
 	client_id: process.env.EFIPAY_CLIENT_ID,
 	client_secret: process.env.EFIPAY_CLIENT_SECRET,
 	certificate: process.env.EFIPAY_PATH_CERTIFICATE, 
+	cert_base64: true,
 }
