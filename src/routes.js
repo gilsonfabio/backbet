@@ -71,4 +71,6 @@ routes.post('/newservicos', ServicesController.create);
 routes.post('/authorize', EfipayController.auth);
 routes.post('/webhook', EfipayController.webhook);
 
+routes.post('/certificado', EfipayController.certificado);
+
 module.exports = routes;

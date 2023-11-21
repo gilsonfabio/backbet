@@ -261,4 +261,14 @@ module.exports = {
 		
     },
 
+    async certificado (request, response) {
+        const fs = require('fs')
+        const path = require('path')
+
+        const cert = fs.readFileSync('C:/users/gilsonfabio/estudo/backbet/src/certs/homologacao-499441-NextBet.p12', 'base64');	    
+
+        console.log(cert);
+        return response.json(cert);
+    }
+
 };
