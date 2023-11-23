@@ -1,12 +1,11 @@
 const fs = require('fs')
 const path = require('path')
 
-//const cert = fs.readFileSync(
-//    path.resolve(__dirname, `src/certs/${process.env.EFIPAY_PATH_CERTIFICATE}`)	
-//);
+//const cert = path.resolve(__dirname, `src/certs/${process.env.EFIPAY_CERTIFICATE}`);
 
-//console.log(cert);
-const certBase64 = process.env.EFIPAY_PATH_CERTIFICATE;
+let cert = Buffer.from(process.env.EFIPAY_CERTIFICATE, 'base64')
+
+console.log(cert);
 
 module.exports = {
 	// PRODUÇÃO = false
@@ -14,6 +13,6 @@ module.exports = {
 	sandbox: process.env.EFIPAY_SANDBOX,
 	client_id: process.env.EFIPAY_CLIENT_ID,
 	client_secret: process.env.EFIPAY_CLIENT_SECRET,
-	certificate: certBase64, 
+	certificate: cert,
 	cert_base64: true,
 }
